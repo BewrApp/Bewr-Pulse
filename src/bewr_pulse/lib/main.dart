@@ -261,19 +261,38 @@ class MicStreamExampleAppState extends State<MicStreamExampleApp>
             secondary: Colors.white,
           ),
     );
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: theme,
       home: Scaffold(
           appBar: AppBar(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text('Bewr'),
-                Text(' Pulse', style: TextStyle(color: _getBgColor())),
-              ],
+            leading: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Image(
+                image: (isRecording)
+                    ? const AssetImage('assets/images/icon_red.png')
+                    : const AssetImage('assets/images/icon.png'),
+              ),
             ),
-            centerTitle: true,
+            title: RichText(
+              text: TextSpan(
+                style: const TextStyle(
+                  fontSize: 20,
+                ),
+                children: [
+                  const TextSpan(
+                    text: 'Bewr ',
+                  ),
+                  TextSpan(
+                    text: 'Pulse',
+                    style: TextStyle(
+                      color: _getBgColor(),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
           floatingActionButton: FloatingActionButton(
             onPressed: _controlMicStream,
