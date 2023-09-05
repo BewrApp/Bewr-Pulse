@@ -35,6 +35,7 @@ class MicStreamExampleAppState extends State<MicStreamExampleApp>
   int? localMin;
   double threshold = 0.0083;
   bool autoIntensity = true;
+  bool useIntensityAmplitude = true;
 
   Random rng = Random();
 
@@ -143,7 +144,8 @@ class MicStreamExampleAppState extends State<MicStreamExampleApp>
     // debugPrint("Current threshold ${threshold.toStringAsFixed(10)}");
 
     // Ajuster l'amplitude en fonction de l'intensité
-    double amplitude = pow(1 - intensity, 2) * 255;
+    double amplitude =
+        useIntensityAmplitude ? pow(1 - intensity, 2) * 255 : 255;
 
     if (autoIntensity) {
       updateIntensity(intensity);
@@ -196,7 +198,8 @@ class MicStreamExampleAppState extends State<MicStreamExampleApp>
       threshold = currentMin! + (currentMax! - currentMin!) * 0.807;
 
       if (intensity > threshold) {
-        double amplitude = pow(1 - intensity, 2) * 255;
+        double amplitude =
+            useIntensityAmplitude ? pow(1 - intensity, 2) * 255 : 255;
         if (amplitude > 255) amplitude = 255;
         Vibration.vibrate(duration: 50, amplitude: amplitude.toInt());
       }
@@ -275,6 +278,7 @@ class MicStreamExampleAppState extends State<MicStreamExampleApp>
                     : const AssetImage('assets/images/icon.png'),
               ),
             ),
+            centerTitle: true,
             title: RichText(
               text: TextSpan(
                 style: const TextStyle(
@@ -326,6 +330,16 @@ class MicStreamExampleAppState extends State<MicStreamExampleApp>
                       onChanged: (value) {
                         setState(() {
                           autoIntensity = value;
+                        });
+                      },
+                      activeColor: _getBgColor(),
+                    ),
+                    SwitchListTile(
+                      title: const Text('Use Intensity Amplitude'),
+                      value: useIntensityAmplitude,
+                      onChanged: (value) {
+                        setState(() {
+                          useIntensityAmplitude = value;
                         });
                       },
                       activeColor: _getBgColor(),
